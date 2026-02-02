@@ -1,0 +1,7 @@
+# Utiliser l'image officielle de PostgreSQL version 18
+FROM postgres:18
+
+# Définir les variables d'environnement
+ENV POSTGRES_DB=immopoem
+ENV POSTGRES_USER=admin
+ENV POSTGRES_PASSWORD=admin123
