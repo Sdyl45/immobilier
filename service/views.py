@@ -6,7 +6,13 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum
 from django.utils.timezone import now
+from rest_framework_simplejwt.views import TokenObtainPairView
+# djangorestframework-simplejwt
 
+# import jwt
+
+from django.conf import settings
+from .serializers import UserCreateSerializer
 from .models import (
     User, Role,
     Propriete, Unite,
@@ -17,7 +23,7 @@ from .serializers import (
     UserSerializer, RoleSerializer,
     ProprieteSerializer, UniteSerializer,
     TenantSerializer, BailSerializer,
-    InvoiceSerializer, PaiementSerializer, MaintenanceSerializer
+    InvoiceSerializer, PaiementSerializer, MaintenanceSerializer, UserLoginSerializer
 )
 
 
@@ -39,7 +45,7 @@ class RoleCreateView(generics.CreateAPIView):
 
 class UserCreate(generics.CreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserCreateSerializer
 
 
 class UserList(APIView):
@@ -68,7 +74,10 @@ class UserDetail(APIView):
         user.delete()
         return Response(status=204)
 
+# login user jwt
 
+class LoginView(TokenObtainPairView):
+    serializer_class = UserLoginSerializer
 # =========================
 # ROLES
 # =========================

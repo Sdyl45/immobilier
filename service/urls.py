@@ -9,6 +9,8 @@ urlpatterns = [
     path('api/users/', UserList.as_view(), name='user_list'),
     path('api/users/create/', UserCreate.as_view(), name='user_create'),
     path('api/users/<int:pk>/', UserDetail.as_view(), name='user_detail'),
+    # login path
+    path('api/login/', LoginView.as_view(), name='login'),
 
     path('api/roles/', RoleList.as_view(), name='role_list'),
     path('api/roles/create/', RoleCreateView.as_view(), name='role_create'),

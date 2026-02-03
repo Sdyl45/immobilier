@@ -1,4 +1,4 @@
-
+from django.contrib.auth import authenticate
 from rest_framework import serializers
 from .models import (
     Role,
@@ -38,10 +38,11 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name',
             'email',
             'role',
+            'password',
         )
         read_only_fields = ('id', 'date_joined')
 
-
+# serializer for create user
 class UserCreateSerializer(serializers.ModelSerializer):
     role = serializers.PrimaryKeyRelatedField(
         queryset=Role.objects.all(),
@@ -56,7 +57,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
             'last_name',
             'email',
             'password',
-            'role'
+            'role',
+            'password'
         )
 
     def create(self, validated_data):
@@ -66,6 +68,34 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+# serializer for login user
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class UserLoginSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        # Ajoutez des champs personnalisés au token si nécessaire
+        token['email'] = user.email
+        token['first_name'] = user.first_name
+        token['last_name'] = user.last_name
+        return token
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+        
+        # Ajoutez des informations supplémentaires sur l'utilisateur si nécessaire
+        data['user'] = {
+            'id': self.user.id,
+            'email': self.user.email,
+            'first_name': self.user.first_name,
+            'last_name': self.user.last_name,
+            'role': self.user.role.name if self.user.role else None,
+        }
+        return data
 
 # =========================
 # PROPRIETE
