@@ -25,6 +25,7 @@ from .serializers import (
     TenantSerializer, BailSerializer,
     InvoiceSerializer, PaiementSerializer, MaintenanceSerializer, UserLoginSerializer
 )
+from service import serializers
 
 
 
@@ -137,6 +138,10 @@ class ProprietePartialUpdateAPIView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class PropertyList(generics.ListAPIView):
+    queryset=Propriete.objects.all()
+    serializer_class=ProprieteSerializer
+
 class TotalProprieteView(APIView):
     def get(self, request):
         return Response({'total_proprietes': Propriete.total_proprietes()})

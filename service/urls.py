@@ -20,6 +20,7 @@ urlpatterns = [
     # PROPERTIES
     # =========================
     path('proprietes/', ProprieteList.as_view(), name='propriete_list'),
+    path('proprietes/list', PropertyList.as_view(), name='list'),
     path('proprietes/total/', TotalProprieteView.as_view(), name='total_propriete'),
     path('proprietes/detail/<int:pk>/', ProprieteDetail.as_view(), name='detail_propriete'),
     path("proprietes/delete/<int:pk>/", ProprieteDeleteAPIView.as_view()),
