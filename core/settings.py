@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -209,6 +209,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+# URL de base pour les fichiers statiques
 STATIC_URL = '/static/'
+
+# URL pour les fichiers média
+MEDIA_URL = '/media/'
+
+# Dossiers où les fichiers statiques seront collectés
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Dossier où les fichiers uploadés seront stockés
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Dossiers supplémentaires pour les fichiers statiques
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 AUTH_USER_MODEL = 'service.User'
